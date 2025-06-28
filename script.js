@@ -1,6 +1,6 @@
 function generateQR() {
   const container = document.getElementById('qr-code');
-  const text = document.getElementById('qrText').value;
+  const text = document.getElementById('qrText').value.trim();
 
   container.innerHTML = ''; // Clear previous QR
 
@@ -9,13 +9,14 @@ function generateQR() {
     return;
   }
 
-  QRCode.toCanvas(
-    document.createElement('canvas'),
-    text,
-    { width: 256 },
-    function (err, canvas) {
-      if (err) console.error(err);
-      container.appendChild(canvas);
+  const canvas = document.createElement('canvas');
+
+  QRCode.toCanvas(canvas, text, { width: 256 }, function (err) {
+    if (err) {
+      console.error('Error generating QR Code:', err);
+      alert('Failed to generate QR code.');
+      return;
     }
-  );
+    container.appendChild(canvas);
+  });
 }
